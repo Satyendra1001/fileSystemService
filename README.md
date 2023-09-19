@@ -18,7 +18,7 @@ The File Management Service is a web application that provides users with the ab
 
 ## Technologies Used
 
-- **Backend Framework:** Java, Spring Boot Framework. Prometheus/Micrometer to push monitoring metrics.
+- **Backend Framework:** Java, Spring Boot Framework, Maven, Prometheus & Micrometer.
 
 - **Database:** mySql for metadata storage
 
@@ -51,21 +51,35 @@ The File Management Service is a web application that provides users with the ab
    MYSQL_USERNAME:"user name of mysql"
    MYSQL_PASSWORD:"password of user"
  ```
-4. Run the backend server:
+
+4. Create Mysql table by running below command:  
+```
+   CREATE TABLE `file_meta_data` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fileId` varchar(255) NOT NULL,
+  `fileName` varchar(255) NOT NULL,
+  `contentType` varchar(255) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `fileSize` bigint NOT NULL,
+  `modifiedAt` datetime NOT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `UNIQUE_FILE_ID` (`fileId`);
+```
+5. Run the backend server:
 
    ```
    mvn spring-boot:run
    ```
 
-5. Open the frontend by navigating to the  directory where you have unzipped frontend.zip file  and run server
+6. Download FileSystemFrontend.zip file present at /file-storage-service/src/main/resources/. Open the frontend by navigating to the  directory where you have unzipped FileSystemFrontend.zip file  and run server
 
    ```
    cd path to frontend directory
    python3 -m http.server 8090
    ```
 
-6. Now open http.server:8090 in web browser. Assuming you are runnig backend on localhost:8080 You can now use the web UI to interact with the File Management Service without changing domains in script.js
-7. You can check backend monitoring metrics of all APIs and musql connections  on this url http://localhost:8080/actuator/prometheus
+7. Now open http.server:8090 in web browser. Assuming you are runnig backend on localhost:8080 You can now use the web UI to interact with the File Management Service without changing domains in script.js
+8. You can check backend monitoring metrics of all APIs and musql connections  on this url http://localhost:8080/actuator/prometheus
 
 ## API Endpoints
 
@@ -92,7 +106,7 @@ The File Management Service is a web application that provides users with the ab
     }
   }
   ```
-  **Sample Failure response
+  **Sample Failure response**
   ```
   {
     "responseStatus": "FAILURE",
@@ -100,7 +114,7 @@ The File Management Service is a web application that provides users with the ab
     "responseMsg": "Something Went Wrong"
   }
   ```
-** Similiar types of response will be retuned in all the api.
+** Similiar types of response will be retuned in all the api.**
 - **Read  API:**
   - Endpoint: GET /files/{fileId}
   - Input: Unique file identifier that ypu recieved in upload.
@@ -139,7 +153,7 @@ The File Management Service is a web application that provides users with the ab
   curl --location 'http://localhost:8080/files/list'
   ```
 
-## Usage
+## UI Usage Instructions
 
 1. Upload a File:
    - Use the "File Upload" section in the web UI to upload a file. File name and  metadata will be filled automatically.
